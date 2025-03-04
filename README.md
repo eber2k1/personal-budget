@@ -1,4 +1,4 @@
-# Presupuesto BUDGET
+# PERSONAL BUDGET
 
 ## Descripción
 Una aplicación JavaScript simple que te ayuda a realizar un seguimiento de tus finanzas personales mediante el registro de ingresos y egresos. El programa te permite registrar transacciones y proporciona un resumen de tus movimientos financieros.
