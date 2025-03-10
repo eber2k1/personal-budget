@@ -1,21 +1,20 @@
 console.log("<------- Personal Budget -------->");
 
+// Descripción del objetivo del programa
 /**
  * "Como usuario, quiero registrar el nombre, tipo(ingreso ó egreso) y monto 
  * de una compra o ingreso, para llevar un control de mi dinero."
-Criterios de Aceptación:
-El sistema solicita el nombre y duración.
-Si el nombre está vacío o la duración es menor o igual a cero, muestra un mensaje de error.
-Si los datos son válidos, se guarda la actividad.
+ * Criterios de Aceptación:
+ * El sistema solicita el nombre y duración.
+ * Si el nombre está vacío o la duración es menor o igual a cero, muestra un mensaje de error.
+ * Si los datos son válidos, se guarda la actividad.
  */
 
-// variable global que permita registrar las operaciones
+// Variables globales
 const transacciones = [];
-
-// variable global que permita mostrar el resumen de las transacciones
 const resumenTransaccionces = [];
 
-// función que registra transacciones
+// Función que registra transacciones
 function registrarIngresoOEgreso() {
   while (true) {
     const transaccion = prompt("Ingrese la nueva transacción");
@@ -31,21 +30,18 @@ function registrarIngresoOEgreso() {
     });
 
     const confirmacion = confirm("Desea agregar otra transacción?");
-    // ok => true: continuar con otra transaccion
-    // cancel => false: terminar la transaccion
-    // en que caso deberiamos detener el while
     if (confirmacion === false) {
-      // detener el while
       break;
     }
   }
 }
 
-// función que calcula el ingreso y egreso total
+// Función que calcula el ingreso y egreso total
 function calcularIngresoOEgreso() {
   let ingresos = 0;
   let egresos = 0;
   let cantidadDeTransacciones = 0;
+
   for (let i = 0; i < transacciones.length; i++) {
     const transaccionActual = transacciones[i];
     if (transaccionActual.tipoDeTransaccion === "1") {
@@ -55,6 +51,7 @@ function calcularIngresoOEgreso() {
     }
     cantidadDeTransacciones++;
   }
+
   const total = ingresos - egresos;
   resumenTransaccionces.push({
     ingresos,
@@ -64,13 +61,26 @@ function calcularIngresoOEgreso() {
   });
 }
 
-
-// función que muestra el resumen de transacciones
+// Función que muestra el resumen de transacciones
 function mostrarIngresoOEgreso() {
   calcularIngresoOEgreso();
   console.table(resumenTransaccionces);
 }
 
-// ejecución de las funciones
+// Ejecución de las funciones
 registrarIngresoOEgreso();
 mostrarIngresoOEgreso();
+
+// Función que mapea los nombres de las transacciones
+const nombreMovimientos = transacciones.map((transaccion) => transaccion.transaccion);
+console.log(transacciones);
+console.log(nombreMovimientos);
+
+// Función que filtra las transacciones mayores a 100
+const masDe100 = transacciones.filter((transaccion) => transaccion.tipoDeTransaccion === '2' && transaccion.monto > 100);
+console.log(masDe100);
+
+// Función que busca una transacción por nombre
+const nombredelatransaccion = prompt("Ingrese el nombre de la transacción que desea buscar");
+const buscarMovimiento = transacciones.find((transaccion) => transaccion.transaccion === nombredelatransaccion);
+console.log(buscarMovimiento);
