@@ -2,8 +2,6 @@
 
 Aplicación web moderna para gestionar tus finanzas personales, permitiendo registrar ingresos y egresos con un resumen detallado de tus movimientos financieros.
 
-![Gestor de Presupuesto Personal](https://via.placeholder.com/800x400?text=Gestor+de+Presupuesto+Personal)
-
 ## 🛠️ Descripción
 **Personal Budget** es una aplicación desarrollada con **JavaScript**, **HTML5** y **Tailwind CSS** que facilita el seguimiento de tus finanzas diarias, mostrando un resumen claro de los ingresos, egresos y balance final en una interfaz moderna y fácil de usar.
 
