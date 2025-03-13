@@ -17,12 +17,6 @@ Aplicación web moderna para gestionar tus finanzas personales, permitiendo regi
   - Total de ingresos y gastos
   - Actualización en tiempo real
 
-- **🔍 Búsqueda y filtros avanzados**
-  - Búsqueda por descripción
-  - Filtros por tipo de transacción (ingresos/gastos)
-  - Filtros por rango de montos
-  - Sistema de paginación para grandes volúmenes de datos
-
 - **🎨 Interfaz de usuario moderna**
   - Diseño responsivo para todos los dispositivos
   - Construido con Tailwind CSS
