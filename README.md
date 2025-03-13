@@ -1,52 +1,78 @@
 # 📌 Personal Budget
 
-Aplicación sencilla para gestionar tus finanzas personales, permitiendo registrar ingresos y egresos con un resumen detallado de tus movimientos financieros.
+Aplicación web moderna para gestionar tus finanzas personales, permitiendo registrar ingresos y egresos con un resumen detallado de tus movimientos financieros.
+
+![Gestor de Presupuesto Personal](eber2k1.github.io/personal-budget)
 
 ## 🛠️ Descripción
-**Personal Budget** es una aplicación escrita en **JavaScript** que facilita el seguimiento de tus finanzas diarias, mostrando un resumen claro de los ingresos, egresos y balance final.
+**Personal Budget** es una aplicación desarrollada con **JavaScript**, **HTML5** y **Tailwind CSS** que facilita el seguimiento de tus finanzas diarias, mostrando un resumen claro de los ingresos, egresos y balance final en una interfaz moderna y fácil de usar.
 
-## 🚀 Cómo funciona
-1. El programa solicita los siguientes datos para cada transacción:
-   - 📝 Nombre de la transacción
-   - 🔄 Tipo de transacción: `1` para **Ingreso**, `2` para **Egreso**
-   - 💰 Monto de la transacción
+## ✨ Características
 
-2. Después de cada transacción, puedes elegir:
-   - Agregar otra transacción
-   - Finalizar y ver el resumen
+- **💼 Gestión de transacciones**
+  - Registro de ingresos y gastos
+  - Validación de datos en tiempo real
+  - Alertas informativas para feedback al usuario
 
-3. Al finalizar, se muestra un resumen con:
-   - 📊 Total de ingresos
-   - 📉 Total de egresos
-   - 💵 Balance final
-   - 🔢 Número total de transacciones
+- **📊 Dashboard financiero**
+  - Resumen visual de balance total
+  - Total de ingresos y gastos
+  - Actualización en tiempo real
 
-## 🔑 Funciones Principales
+- **🔍 Búsqueda y filtros avanzados**
+  - Búsqueda por descripción
+  - Filtros por tipo de transacción (ingresos/gastos)
+  - Filtros por rango de montos
+  - Sistema de paginación para grandes volúmenes de datos
 
-### 📌 registrarIngresoOEgreso()
-- Maneja el registro de transacciones.
-- Utiliza `prompt()` para recolectar la información.
-- Almacena las transacciones en un arreglo global.
-- Permite múltiples registros hasta que el usuario finalice.
+- **🎨 Interfaz de usuario moderna**
+  - Diseño responsivo para todos los dispositivos
+  - Construido con Tailwind CSS
+  - Iconografía con Font Awesome
+  - Efectos visuales y transiciones suaves
 
-### 📌 calcularIngresoOEgreso()
-- Calcula:
-  - Total de ingresos.
-  - Total de egresos.
-  - Balance final.
-  - Número total de transacciones.
-- Almacena los resultados en un arreglo global.
+## 🚀 Cómo usar
 
-### 📌 mostrarIngresoOEgreso()
-- Muestra un resumen financiero con los totales y balance.
-- Presenta la información en formato de tabla usando la consola.
+1. **Registro de transacciones:**
+   - Completa el formulario con la descripción y monto
+   - Selecciona el tipo de transacción (ingreso o gasto)
+   - Haz clic en "Guardar Transacción"
 
-## 📄 Ejemplo de Uso
-```js
-registrarIngresoOEgreso();
-calcularIngresoOEgreso();
-mostrarIngresoOEgreso();
+2. **Visualización de datos:**
+   - Revisa el historial de transacciones en la tabla
+
+
+## 🔧 Tecnologías utilizadas
+
+- **Frontend:**
+  - HTML5
+  - JavaScript (Vanilla)
+  - [Tailwind CSS](https://tailwindcss.com/) para estilos
+  - [Font Awesome](https://fontawesome.com/) para iconografía
+
+## � Estructura del proyecto
+
 ```
+personal-budget/
+├── index.html      # Estructura y componentes de la interfaz
+├── app.js          # Lógica de la aplicación y manipulación del DOM
+└── README.md       # Documentación del proyecto
+```
+
+## 🔑 Funcionalidades principales
+
+### 📌 Gestión de transacciones
+- Validación de datos antes de registrar una transacción
+- Feedback visual mediante alertas personalizadas
+- Actualización automática del balance y resumen
+
+
+### � Interfaz de usuario
+- Diseño moderno y responsivo
+- Tarjetas informativas con efectos visuales
+- Formularios intuitivos con validación en tiempo real
+- Tabla de datos con estilos personalizados según el tipo de transacción
+
 ## 🧑‍💻 Autor
 - **GitHub**: [github-eber2k1](https://github.com/eber2k1)  
 - **Correo**: lit27k@gmail.com

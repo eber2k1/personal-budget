@@ -1,29 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Configuración de Tailwind
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
+<html lang="es">
 
-                }
-            }
-        }
-    </script>
-    <title>Personal-budget</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor de Presupuesto Personal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
-<body>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-sans">
+  <div class="container mx-auto px-4 py-8 max-w-5xl">
+    <!-- Cabecera -->
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
+        <i class="fas fa-wallet text-blue-600 mr-2"></i>Gestor de Presupuesto Personal
+      </h1>
+      <p class="text-center text-gray-600 mb-6">Controla tus finanzas de manera simple y efectiva</p>
 
-    <h1>Personal Budget</h1>
-    
+      <div class="mt-4 p-6 bg-white rounded-xl shadow-lg">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          <div class="p-4 rounded-lg bg-blue-50 shadow-md transform hover:scale-105 transition-transform duration-200">
+            <div class="flex items-center justify-center mb-2">
+              <i class="fas fa-balance-scale text-blue-500 text-xl mr-2"></i>
+              <h2 class="text-lg font-semibold text-gray-700">Balance Total</h2>
+            </div>
+            <p id="resume-balance" class="text-3xl font-bold text-blue-600">$0.00</p>
+          </div>
+          <div class="p-4 rounded-lg bg-green-50 shadow-md transform hover:scale-105 transition-transform duration-200">
+            <div class="flex items-center justify-center mb-2">
+              <i class="fas fa-arrow-circle-up text-green-500 text-xl mr-2"></i>
+              <h2 class="text-lg font-semibold text-gray-700">Ingresos</h2>
+            </div>
+            <p id="resume-income" class="text-3xl font-bold text-green-600">$0.00</p>
+          </div>
+          <div class="p-4 rounded-lg bg-red-50 shadow-md transform hover:scale-105 transition-transform duration-200">
+            <div class="flex items-center justify-center mb-2">
+              <i class="fas fa-arrow-circle-down text-red-500 text-xl mr-2"></i>
+              <h2 class="text-lg font-semibold text-gray-700">Gastos</h2>
+            </div>
+            <p id="resume-expense" class="text-3xl font-bold text-red-600">$0.00</p>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <script src="./app.js"></script>
+    <!-- Alert Box (Mensajes de validación) -->
+    <div id="alert-box" class="fixed top-5 right-5 z-50 hidden" role="alert"></div>
+
+    <main class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Formulario para añadir transacciones -->
+      <section>
+        <div class="bg-white p-6 rounded-xl shadow-lg h-full">
+          <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+            <i class="fas fa-plus-circle text-blue-500 mr-2"></i>
+            Nueva transacción
+          </h2>
+          <form id="transaction-form" class="space-y-4">
+            <div>
+              <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+                <i class="fas fa-tag text-gray-500 mr-1"></i> Descripción
+              </label>
+              <input type="text" id="description" name="description" placeholder="¿En qué gastaste o recibiste dinero?"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                aria-describedby="description-error" />
+              <div id="description-error" class="mt-1 text-sm text-red-600 hidden"></div>
+            </div>
+            <div>
+              <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">
+                <i class="fas fa-dollar-sign text-gray-500 mr-1"></i> Monto
+              </label>
+              <input type="number" id="amount" name="amount" placeholder="Ingresa la cantidad" required step="0.01"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                aria-describedby="amount-error" />
+              <div id="amount-error" class="mt-1 text-sm text-red-600 hidden"></div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-sm font-medium text-gray-700 mb-2">
+                <i class="fas fa-exchange-alt text-gray-500 mr-1"></i> Tipo de transacción
+              </p>
+              <div class="flex space-x-4">
+                <div
+                  class="flex items-center bg-white p-3 rounded-lg border border-gray-200 flex-1 transform hover:scale-105 transition-transform duration-200 cursor-pointer">
+                  <input type="radio" id="type-income" name="type" value="income" checked
+                    class="h-4 w-4 text-green-600 focus:ring-green-500" />
+                  <label for="type-income" class="ml-2 block text-sm font-medium text-gray-700 cursor-pointer w-full">
+                    <i class="fas fa-plus-circle text-green-500 mr-1"></i> Ingreso
+                  </label>
+                </div>
+                <div
+                  class="flex items-center bg-white p-3 rounded-lg border border-gray-200 flex-1 transform hover:scale-105 transition-transform duration-200 cursor-pointer">
+                  <input type="radio" id="type-expense" name="type" value="expense"
+                    class="h-4 w-4 text-red-600 focus:ring-red-500" />
+                  <label for="type-expense" class="ml-2 block text-sm font-medium text-gray-700 cursor-pointer w-full">
+                    <i class="fas fa-minus-circle text-red-500 mr-1"></i> Gasto
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button type="submit"
+              class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300 flex items-center justify-center font-medium">
+              <i class="fas fa-save mr-2"></i> Guardar Transacción
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Lista de transacciones -->
+      <section>
+        <div class="bg-white p-6 rounded-xl shadow-lg h-full">
+          <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+            <i class="fas fa-history text-blue-500 mr-2"></i>
+            Historial de transacciones
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead>
+                <tr class="bg-gray-50 border-b">
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Descripción
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Monto
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Fecha
+                  </th>
+                  <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tipo
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="transaction-list" class="divide-y divide-gray-200">
+                <!-- Aquí se cargarán las transacciones dinámicamente -->
+                <tr class="text-sm text-gray-500">
+                  <td colspan="4" class="px-6 py-8 text-center">
+                    <i class="fas fa-receipt text-gray-300 text-5xl mb-3 block"></i>
+                    <p>No hay transacciones registradas</p>
+                    <p class="text-xs mt-1">Las transacciones que agregues aparecerán aquí</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+
+    <!-- Pie de página -->
+    <footer class="mt-8 text-center text-gray-500 text-sm py-4 border-t border-gray-200">
+      <p>Gestor de Presupuesto Personal © 2025 | Desarrollado con <i class="fas fa-heart text-red-400"></i></p>
+    </footer>
+
+  </div>
+  <script src="./app.js"></script>
 </body>
 
 </html>
