@@ -39,7 +39,7 @@ Movimiento.prototype.validarMovimiento = function () {
     };
   }
   
-  if (!["income", "expense"].includes(this.tipo)) {
+  if (!["ingreso", "gasto"].includes(this.tipo)) {
     return {
       ok: false,
       message: "El valor tipo es erroneo",
@@ -71,7 +71,7 @@ Movimiento.prototype.formatDate = function() {
  * Método para renderizar un movimiento en la tabla
  */
 Movimiento.prototype.render = function () {
-  const esEgreso = this.tipo === "expense";
+  const esEgreso = this.tipo === "gasto";
   const colorTexto = esEgreso ? "text-red-600" : "text-green-600";
   const colorFondo = esEgreso ? "bg-red-200" : "bg-green-200";
   const signo = esEgreso ? "-" : "+";
@@ -178,7 +178,7 @@ function recalculateTotals() {
   const resumeExpense = document.querySelector("#resume-expense");
 
   const balance = transacciones.reduce((total, mov) => {
-    if (mov.tipo === "income") {
+    if (mov.tipo === "ingreso") {
       return total + Number(mov.monto);
     } else {
       return total - Number(mov.monto);
@@ -186,10 +186,10 @@ function recalculateTotals() {
   }, 0);
   resumeBalance.innerHTML = `$${balance.toFixed(2)}`;
 
-  const income = transacciones.filter(mov => mov.tipo === "income").reduce((total, mov) => total + Number(mov.monto), 0);
+  const income = transacciones.filter(mov => mov.tipo === "ingreso").reduce((total, mov) => total + Number(mov.monto), 0);
   resumeIncome.innerHTML = `$${income.toFixed(2)}`;
 
-  const expense = transacciones.filter(mov => mov.tipo === "expense").reduce((total, mov) => total + Number(mov.monto), 0);
+  const expense = transacciones.filter(mov => mov.tipo === "gasto").reduce((total, mov) => total + Number(mov.monto), 0);
   resumeExpense.innerHTML = `$${expense.toFixed(2)}`;
 }
 
