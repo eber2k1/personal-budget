@@ -6,6 +6,9 @@ const form = document.querySelector("form");
 const transactionList = document.querySelector("#transaction-list");
 const alertBox = document.querySelector("#alert-box");
 
+// Referencia al campo de búsqueda
+const searchInput = document.querySelector("#search-transaction");
+
 // ==========================================
 // CONSTRUCTOR Y MÉTODOS DE MOVIMIENTO
 // ==========================================
@@ -77,7 +80,7 @@ Movimiento.prototype.render = function () {
   const signo = esEgreso ? "-" : "+";
 
   const newRow = `
-    <tr class="hover:${colorFondo} ${colorFondo}/30 transition-colors duration-200">
+    <tr class="hover:${colorFondo} ${colorFondo}/30 transition-colors duration-200" data-description="${this.descripcion.toLowerCase()}">
       <td class="px-4 py-3 font-medium">${this.descripcion}</td>
       <td class="px-4 py-3 ${colorTexto} font-bold">${signo}$${Math.abs(
     this.monto
@@ -154,14 +157,14 @@ function createMovement(movement) {
   const validacion = nuevoMovimiento.validarMovimiento();
 
   if (validacion.ok) {
-    transacciones.push(nuevoMovimiento);
+    transacciones.push(nuevoMovimiento); // Añadimos el movimiento al array de transacciones
     
     // Verificar si es el primer movimiento para limpiar el mensaje de "No hay transacciones"
     if (transacciones.length === 1) {
       transactionList.innerHTML = '';
     }
     
-    nuevoMovimiento.render();
+    nuevoMovimiento.render(); // Renderizamos el movimiento en la tabla
     mostrarAlerta(validacion.message, "success");
     form.reset();
   } else {
@@ -193,6 +196,74 @@ function recalculateTotals() {
   resumeExpense.innerHTML = `$${expense.toFixed(2)}`;
 }
 
+// ==========================================
+// FUNCIONES DE BÚSQUEDA
+// ==========================================
+
+/**
+ * Filtra las transacciones según el texto de búsqueda
+ * @param {string} searchText - Texto para filtrar las transacciones
+ */
+function filterTransactions(searchText) {
+  // Convertimos el texto de búsqueda a minúsculas para hacer la comparación insensible a mayúsculas/minúsculas
+  const searchLower = searchText.toLowerCase();
+  
+  // Si no hay texto de búsqueda, mostramos todas las transacciones
+  if (searchLower === '') {
+    renderAllTransactions();
+    return;
+  }
+  
+  // Limpiamos la lista de transacciones
+  transactionList.innerHTML = '';
+  
+  // Filtramos las transacciones que coinciden con el texto de búsqueda
+  const filteredTransactions = transacciones.filter(
+    mov => mov.descripcion.toLowerCase().includes(searchLower)
+  );
+  
+  // Si no hay resultados, mostramos un mensaje
+  if (filteredTransactions.length === 0) {
+    transactionList.innerHTML = `
+      <tr class="text-sm text-gray-500">
+        <td colspan="4" class="px-6 py-8 text-center">
+          <i class="fas fa-search text-gray-300 text-5xl mb-3 block" aria-hidden="true"></i>
+          <p>No se encontraron transacciones con "${searchText}"</p>
+          <p class="text-xs mt-1">Intenta con otra descripción</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  // Renderizamos las transacciones filtradas
+  filteredTransactions.forEach(mov => mov.render());
+}
+
+/**
+ * Renderiza todas las transacciones en la tabla
+ */
+function renderAllTransactions() {
+  // Limpiamos la lista de transacciones
+  transactionList.innerHTML = '';
+  
+  // Si no hay transacciones, mostramos el mensaje predeterminado
+  if (transacciones.length === 0) {
+    transactionList.innerHTML = `
+      <tr class="text-sm text-gray-500">
+        <td colspan="4" class="px-6 py-8 text-center">
+          <i class="fas fa-receipt text-gray-300 text-5xl mb-3 block" aria-hidden="true"></i>
+          <p>No hay transacciones registradas</p>
+          <p class="text-xs mt-1">Las transacciones que agregues aparecerán aquí</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  // Renderizamos todas las transacciones
+  transacciones.forEach(mov => mov.render());
+}
 
 // ==========================================
 // EVENT LISTENERS
@@ -204,4 +275,16 @@ form.addEventListener("submit", function (event) {
   const newMovement = getDataFromForm();
   createMovement(newMovement);
   recalculateTotals();
+  
+  // Si hay un texto en el campo de búsqueda, aplicamos el filtro después de añadir la nueva transacción
+  if (searchInput && searchInput.value.trim() !== '') {
+    filterTransactions(searchInput.value);
+  }
 });
+
+// Escuchamos el evento input del campo de búsqueda para filtrar transacciones en tiempo real
+if (searchInput) {
+  searchInput.addEventListener("input", function() {
+    filterTransactions(this.value);
+  });
+}
