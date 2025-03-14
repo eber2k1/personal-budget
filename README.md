@@ -2,7 +2,7 @@
 
 Aplicación web moderna para gestionar tus finanzas personales, permitiendo registrar ingresos y egresos con un resumen detallado de tus movimientos financieros.
 
-## 📝 Historias de Usuario 01
+## 📝 Historias de Usuario
 
 ### 🔍 HU1: Búsqueda de transacciones por descripción
 
