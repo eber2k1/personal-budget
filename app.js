@@ -9,6 +9,11 @@ const alertBox = document.querySelector("#alert-box");
 // Referencia al campo de búsqueda
 const searchInput = document.querySelector("#search-transaction");
 
+// Referencias a los filtros de tipo
+const filterAll = document.querySelector("#filter-all");
+const filterIncome = document.querySelector("#filter-income");
+const filterExpense = document.querySelector("#filter-expense");
+
 // ==========================================
 // CONSTRUCTOR Y MÉTODOS DE MOVIMIENTO
 // ==========================================
@@ -80,7 +85,7 @@ Movimiento.prototype.render = function () {
   const signo = esEgreso ? "-" : "+";
 
   const newRow = `
-    <tr class="hover:${colorFondo} ${colorFondo}/30 transition-colors duration-200" data-description="${this.descripcion.toLowerCase()}">
+    <tr class="hover:${colorFondo} ${colorFondo}/30 transition-colors duration-200">
       <td class="px-4 py-3 font-medium">${this.descripcion}</td>
       <td class="px-4 py-3 ${colorTexto} font-bold">${signo}$${Math.abs(
     this.monto
@@ -157,14 +162,14 @@ function createMovement(movement) {
   const validacion = nuevoMovimiento.validarMovimiento();
 
   if (validacion.ok) {
-    transacciones.push(nuevoMovimiento); // Añadimos el movimiento al array de transacciones
+    transacciones.push(nuevoMovimiento);
     
     // Verificar si es el primer movimiento para limpiar el mensaje de "No hay transacciones"
     if (transacciones.length === 1) {
       transactionList.innerHTML = '';
     }
     
-    nuevoMovimiento.render(); // Renderizamos el movimiento en la tabla
+    nuevoMovimiento.render();
     mostrarAlerta(validacion.message, "success");
     form.reset();
   } else {
@@ -201,35 +206,58 @@ function recalculateTotals() {
 // ==========================================
 
 /**
- * Filtra las transacciones según el texto de búsqueda
+ * Filtra las transacciones según el texto de búsqueda y el tipo seleccionado
  * @param {string} searchText - Texto para filtrar las transacciones
+ * @param {string} filterType - Tipo de transacción para filtrar ('all', 'income', 'expense')
  */
-function filterTransactions(searchText) {
+function filterTransactions(searchText = '', filterType = 'all') {
   // Convertimos el texto de búsqueda a minúsculas para hacer la comparación insensible a mayúsculas/minúsculas
   const searchLower = searchText.toLowerCase();
   
-  // Si no hay texto de búsqueda, mostramos todas las transacciones
+  // Filtramos primero por tipo
+  let filteredByType = transacciones;
+  
+  if (filterType !== 'all') {
+    filteredByType = transacciones.filter(mov => mov.tipo === filterType);
+  }
+  
+  // Si no hay texto de búsqueda, mostramos todas las transacciones del tipo seleccionado
   if (searchLower === '') {
-    renderAllTransactions();
+    renderFilteredTransactions(filteredByType);
     return;
   }
   
-  // Limpiamos la lista de transacciones
-  transactionList.innerHTML = '';
-  
-  // Filtramos las transacciones que coinciden con el texto de búsqueda
-  const filteredTransactions = transacciones.filter(
+  // Filtramos las transacciones por tipo y texto de búsqueda
+  const filteredTransactions = filteredByType.filter(
     mov => mov.descripcion.toLowerCase().includes(searchLower)
   );
   
+  renderFilteredTransactions(filteredTransactions);
+}
+
+/**
+ * Renderiza las transacciones filtradas en la tabla
+ * @param {Array} filteredTransactions - Array de transacciones filtradas para mostrar
+ */
+function renderFilteredTransactions(filteredTransactions) {
+  // Limpiamos la lista de transacciones
+  transactionList.innerHTML = '';
+  
   // Si no hay resultados, mostramos un mensaje
   if (filteredTransactions.length === 0) {
+    const currentFilterType = document.querySelector('input[name="filter-type"]:checked').value;
+    const filterTypeText = currentFilterType === 'all' ? '' : 
+                           currentFilterType === 'income' ? ' de ingresos' : ' de gastos';
+    
+    const searchText = searchInput ? searchInput.value : '';
+    const searchTextMessage = searchText ? ` con "${searchText}"` : '';
+    
     transactionList.innerHTML = `
       <tr class="text-sm text-gray-500">
         <td colspan="4" class="px-6 py-8 text-center">
           <i class="fas fa-search text-gray-300 text-5xl mb-3 block" aria-hidden="true"></i>
-          <p>No se encontraron transacciones con "${searchText}"</p>
-          <p class="text-xs mt-1">Intenta con otra descripción</p>
+          <p>No se encontraron transacciones${filterTypeText}${searchTextMessage}</p>
+          <p class="text-xs mt-1">Intenta con otros criterios de búsqueda</p>
         </td>
       </tr>
     `;
@@ -265,6 +293,14 @@ function renderAllTransactions() {
   transacciones.forEach(mov => mov.render());
 }
 
+/**
+ * Obtiene el tipo de filtro seleccionado actualmente
+ * @returns {string} Tipo de filtro ('all', 'income', 'expense')
+ */
+function getCurrentFilterType() {
+  return document.querySelector('input[name="filter-type"]:checked').value;
+}
+
 // ==========================================
 // EVENT LISTENERS
 // ==========================================
@@ -276,15 +312,44 @@ form.addEventListener("submit", function (event) {
   createMovement(newMovement);
   recalculateTotals();
   
-  // Si hay un texto en el campo de búsqueda, aplicamos el filtro después de añadir la nueva transacción
-  if (searchInput && searchInput.value.trim() !== '') {
-    filterTransactions(searchInput.value);
-  }
+  // Aplicamos los filtros actuales después de añadir una nueva transacción
+  const currentFilterType = getCurrentFilterType();
+  const searchText = searchInput ? searchInput.value : '';
+  filterTransactions(searchText, currentFilterType);
 });
 
 // Escuchamos el evento input del campo de búsqueda para filtrar transacciones en tiempo real
 if (searchInput) {
   searchInput.addEventListener("input", function() {
-    filterTransactions(this.value);
+    const currentFilterType = getCurrentFilterType();
+    filterTransactions(this.value, currentFilterType);
+  });
+}
+
+// Escuchamos los cambios en los filtros de tipo
+if (filterAll) {
+  filterAll.addEventListener("change", function() {
+    if (this.checked) {
+      const searchText = searchInput ? searchInput.value : '';
+      filterTransactions(searchText, 'all');
+    }
+  });
+}
+
+if (filterIncome) {
+  filterIncome.addEventListener("change", function() {
+    if (this.checked) {
+      const searchText = searchInput ? searchInput.value : '';
+      filterTransactions(searchText, 'income');
+    }
+  });
+}
+
+if (filterExpense) {
+  filterExpense.addEventListener("change", function() {
+    if (this.checked) {
+      const searchText = searchInput ? searchInput.value : '';
+      filterTransactions(searchText, 'expense');
+    }
   });
 }

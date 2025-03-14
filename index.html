@@ -120,8 +120,9 @@
             Historial de transacciones
           </h2>
           
-          <!-- Campo de búsqueda para filtrar transacciones -->
-          <div class="mb-4">
+          <!-- Filtros para las transacciones -->
+          <div class="mb-4 space-y-3">
+            <!-- Campo de búsqueda para filtrar transacciones -->
             <div class="relative">
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <i class="fas fa-search text-gray-400" aria-hidden="true"></i>
@@ -131,8 +132,38 @@
                 class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 aria-label="Buscar transacciones por descripción">
             </div>
+            
+            <!-- Filtro por tipo de transacción -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <p class="text-sm font-medium text-gray-700 mb-2">
+                <i class="fas fa-filter text-gray-500 mr-1" aria-hidden="true"></i> Filtrar por tipo:
+              </p>
+              <div class="flex space-x-3">
+                <div class="flex items-center">
+                  <input type="radio" id="filter-all" name="filter-type" value="all" checked
+                    class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                  <label for="filter-all" class="ml-2 block text-sm font-medium text-gray-700 cursor-pointer">
+                    Todos
+                  </label>
+                </div>
+                <div class="flex items-center">
+                  <input type="radio" id="filter-income" name="filter-type" value="income"
+                    class="h-4 w-4 text-green-600 focus:ring-green-500">
+                  <label for="filter-income" class="ml-2 block text-sm font-medium text-gray-700 cursor-pointer">
+                    <i class="fas fa-plus-circle text-green-500 mr-1" aria-hidden="true"></i> Ingresos
+                  </label>
+                </div>
+                <div class="flex items-center">
+                  <input type="radio" id="filter-expense" name="filter-type" value="expense"
+                    class="h-4 w-4 text-red-600 focus:ring-red-500">
+                  <label for="filter-expense" class="ml-2 block text-sm font-medium text-gray-700 cursor-pointer">
+                    <i class="fas fa-minus-circle text-red-500 mr-1" aria-hidden="true"></i> Gastos
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
-          <!-- Fin campo de búsqueda para filtrar transacciones -->
+          <!-- Fin de filtros para las transacciones -->
           
           <div class="overflow-x-auto">
             <table class="min-w-full" aria-label="Historial de transacciones">
