@@ -210,14 +210,14 @@ function recalculateTotals() {
  * @param {string} searchText - Texto para filtrar las transacciones
  * @param {string} filterType - Tipo de transacción para filtrar ('all', 'income', 'expense')
  */
-function filterTransactions(searchText = '', filterType = 'all') {
+function filterTransactions(searchText = '', filterType = 'todos') {
   // Convertimos el texto de búsqueda a minúsculas para hacer la comparación insensible a mayúsculas/minúsculas
   const searchLower = searchText.toLowerCase();
   
   // Filtramos primero por tipo
   let filteredByType = transacciones;
   
-  if (filterType !== 'all') {
+  if (filterType !== 'todos') {
     filteredByType = transacciones.filter(mov => mov.tipo === filterType);
   }
   
@@ -246,8 +246,8 @@ function renderFilteredTransactions(filteredTransactions) {
   // Si no hay resultados, mostramos un mensaje
   if (filteredTransactions.length === 0) {
     const currentFilterType = document.querySelector('input[name="filter-type"]:checked').value;
-    const filterTypeText = currentFilterType === 'all' ? '' : 
-                           currentFilterType === 'income' ? ' de ingresos' : ' de gastos';
+    const filterTypeText = currentFilterType === 'todos' ? '' : 
+                           currentFilterType === 'ingreso' ? ' de ingresos' : ' de gastos';
     
     const searchText = searchInput ? searchInput.value : '';
     const searchTextMessage = searchText ? ` con "${searchText}"` : '';
@@ -331,7 +331,7 @@ if (filterAll) {
   filterAll.addEventListener("change", function() {
     if (this.checked) {
       const searchText = searchInput ? searchInput.value : '';
-      filterTransactions(searchText, 'all');
+      filterTransactions(searchText, 'todos');
     }
   });
 }
@@ -340,7 +340,7 @@ if (filterIncome) {
   filterIncome.addEventListener("change", function() {
     if (this.checked) {
       const searchText = searchInput ? searchInput.value : '';
-      filterTransactions(searchText, 'income');
+      filterTransactions(searchText, 'ingreso');
     }
   });
 }
@@ -349,7 +349,7 @@ if (filterExpense) {
   filterExpense.addEventListener("change", function() {
     if (this.checked) {
       const searchText = searchInput ? searchInput.value : '';
-      filterTransactions(searchText, 'expense');
+      filterTransactions(searchText, 'gasto');
     }
   });
 }
