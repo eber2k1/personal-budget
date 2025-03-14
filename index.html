@@ -144,15 +144,36 @@
               </tbody>
             </table>
           </div>
+          <!-- Paginación -->
+          <div class="flex justify-between items-center mt-4">
+            <div class="text-sm text-gray-700">
+              Mostrando <span id="page-start">0</span> - <span id="page-end">0</span> de <span id="total-items">0</span>
+              transacciones
+            </div>
+            <div class="flex space-x-2">
+              <button id="prev-page" disabled
+                class="px-3 py-1 rounded border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div id="pagination-numbers" class="flex space-x-1">
+                <!-- Números de página se generarán dinámicamente -->
+              </div>
+              <button id="next-page" disabled
+                class="px-3 py-1 rounded border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <!--END Paginación -->
         </div>
       </section>
-      
     </main>
 
 
     <!-- Pie de página -->
     <footer class="mt-8 text-center text-gray-500 text-sm py-4 border-t border-gray-200">
-      <p>Gestor de Presupuesto Personal © 2025 | Desarrollado por <a href="https://github.com/eber2k1" class="underline">eber2k1</a></p>
+      <p>Gestor de Presupuesto Personal © 2025 | Desarrollado por <a href="https://github.com/eber2k1"
+          class="underline">eber2k1</a></p>
     </footer>
 
   </div>

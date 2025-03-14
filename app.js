@@ -193,6 +193,7 @@ function recalculateTotals() {
   resumeExpense.innerHTML = `$${expense.toFixed(2)}`;
 }
 
+
 // ==========================================
 // EVENT LISTENERS
 // ==========================================
